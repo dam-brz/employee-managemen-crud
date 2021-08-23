@@ -5,6 +5,8 @@ import com.dambrz.emscrud.service.EmployeeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class EmployeeController {
@@ -28,5 +30,13 @@ public class EmployeeController {
         Employee employee = new Employee();
         model.addAttribute("employee", employee);
         return "new-employee";
+    }
+
+    // SAVE EMPLOYEE TO DATABASE
+    @PostMapping("/saveEmployee")
+    public String saveEmployee(@ModelAttribute("employee") Employee employee) {
+
+        employeeService.saveEmployee(employee);
+        return "redirect:/";
     }
 }
