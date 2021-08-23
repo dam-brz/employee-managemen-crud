@@ -1,5 +1,6 @@
 package com.dambrz.emscrud.controller;
 
+import com.dambrz.emscrud.model.Employee;
 import com.dambrz.emscrud.service.EmployeeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,5 +20,13 @@ public class EmployeeController {
     public String viewHomePage(Model model) {
         model.addAttribute("listEmployees", employeeService.getAllEmployees());
         return "index";
+    }
+
+    // DISPLAY NEW EMPLOYEE FORM
+    @GetMapping("/showNewEmployeeForm")
+    public String showNewEmployeeForm(Model model) {
+        Employee employee = new Employee();
+        model.addAttribute("employee", employee);
+        return "new-employee";
     }
 }
