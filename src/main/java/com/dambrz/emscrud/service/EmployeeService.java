@@ -25,6 +25,15 @@ public class EmployeeService {
     }
 
     public Optional<Employee> getEmployeeById(long id) {
-        return employeeRepository.findById(id);
+        return this.employeeRepository.findById(id);
     }
+
+    public Optional<Employee> deleteEmployeeById(long id) {
+
+        Optional<Employee> employee = this.employeeRepository.findById(id);
+        employee.ifPresent(this.employeeRepository::delete);
+
+        return employee;
+    }
+
 }
