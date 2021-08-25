@@ -4,10 +4,9 @@ import com.dambrz.emscrud.model.Employee;
 import com.dambrz.emscrud.service.EmployeeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 public class EmployeeController {
@@ -28,8 +27,7 @@ public class EmployeeController {
     // DISPLAY NEW EMPLOYEE FORM
     @GetMapping("/showNewEmployeeForm")
     public String showNewEmployeeForm(Model model) {
-        Employee employee = new Employee();
-        model.addAttribute("employee", employee);
+        model.addAttribute("employee", new Employee());
         return "new-employee";
     }
 
@@ -37,14 +35,27 @@ public class EmployeeController {
     @PostMapping("/saveEmployee")
     public String saveEmployee(@ModelAttribute("employee") Employee employee) {
 
-        employeeService.saveEmployee(employee);
+        this.employeeService.saveEmployee(employee);
         return "redirect:/";
     }
 
+    // UPDATE TO DATABASE
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
 
         model.addAttribute("employee", employeeService.getEmployeeById(id));
         return "update-employee";
+    }
+
+    //DELETE EMPLOYEE
+    @GetMapping("/deleteEmployee/{id}")
+    public String deleteEmployee(@PathVariable(value = "id") long id) {
+
+        Optional<Employee> employee = this.employeeService.deleteEmployeeById(id);
+        if (employee.isEmpty()) {
+            return "redirect:/?deleteSuccess=false";
+        }
+
+        return "redirect:/?deleteSuccess=true";
     }
 }
